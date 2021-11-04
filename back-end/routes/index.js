@@ -1,10 +1,10 @@
 const userAuth = require("./userAuth");
 const adminAuth = require('./adminAuth');
-
+const user = require('./user')
 const paths = [
   {
     path: "/api/user",
-    controller: [userAuth],
+    controller: [userAuth,user],
   },
   {
     path:'/api/admin',
