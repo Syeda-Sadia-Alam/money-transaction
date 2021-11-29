@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 // Models
 const User = require("../models/User");
-const Account = require("../models/Account");
+const Card  = require('../models/Card')
 
 // User login controller
 exports.userLoginPostController = async (req, res) => {
@@ -29,7 +29,6 @@ exports.userLoginPostController = async (req, res) => {
     const token = jwt.sign({ email, name: hasUser.name }, "financeDesk");
     res.status(200).json({ message: "Successfully logged!", token });
   }catch(err){
-    console.log(err)
     res.status(500).json({message:'Internal server error'})
   }
 
@@ -67,23 +66,46 @@ exports.userSignupPostController = async (req, res) => {
       email,
       password: hasPassword,
     });
-    // Create user account object with mongoose model
-    const createAccount = new Account({
-      accountType: "Checking Account",
-      user: createUser._id,
-    });
-    // Saves user and account in MongoDB
-    const cu = await createUser.save();
-    const ac = await createAccount.save();
 
+    // Create user account object with mongoose model
+    const createCard = new Card({
+      user:createUser._id,
+      status:'activated',
+      currencyType:"USD",
+      number:new Date().valueOf()
+    });
+    // Saves user and card in MongoDB
+    const createdUser = await createUser.save();
+    const createdCard = await createCard.save();
+    // To adding card id with created user
+    await User.findOneAndUpdate({_id:createdUser._id},{
+      card:createdCard._id
+    },{new:true})
     res
       .status(201)
-      .json({ message: "Registration has been successfully completed!" ,cu,ac});
+      .json({ message: "Registration has been successfully completed!"});
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
+// Verify User Token
+exports.verifyUserTokenGetController = async(req,res)=>{
+  const token = req.headers["x-user-auth-token"];
+  if (!token) {
+    return res.status(200).json(false);
+  }
+  try {
+    const { email } = jwt.verify(token, "financeDesk");
+    const user = await User.findOne({ email });
+    if(!user){
+      return res.status(200).json(false);
+    }
+    res.status(200).json(true);
+  }catch(error){
+    res.status(200).json(false)
+  }
+}
+
 // User change password controller
 exports.userForgotPasswordPostController = async (req, res) => {
   const { oldPassword, newPassword } = req.body;
@@ -115,7 +137,6 @@ exports.userForgotPasswordPostController = async (req, res) => {
       message: "Your password has been successfully updated!",
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       message: "Internal server error",
     });

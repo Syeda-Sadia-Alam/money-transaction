@@ -1,37 +1,18 @@
-import { BrowserRouter as Router, useLocation } from 'react-router-dom';
-import AdminLayout from './components/Admin/Layout/Layout';
+import { BrowserRouter as Router } from 'react-router-dom';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
-import providers from './context/providers';
-import Routes from './Routes';
-
-const { UserProvider } = providers;
-
-const RenderRoutes = () => {
-    const location = useLocation();
-    if (location.pathname.slice(1, 6) === 'admin') {
-        return (
-            <AdminLayout>
-                <Routes />
-            </AdminLayout>
-        );
-    }
-    return (
-        <>
-            <Header />
-            <Routes />
-            <Footer />
-        </>
-    );
-};
+import AppProvider from './context/providers/appProvider';
+import Routes from './Routes/Routes';
 
 function App() {
     return (
-        <UserProvider>
+        <AppProvider>
             <Router>
-                <RenderRoutes />
+                <Header />
+                <Routes />
+                <Footer />
             </Router>
-        </UserProvider>
+        </AppProvider>
     );
 }
 export default App;

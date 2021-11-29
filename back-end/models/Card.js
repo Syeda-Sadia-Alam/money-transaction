@@ -1,27 +1,28 @@
 const { model, Schema } = require("mongoose");
 
+const date = new Date()
+
 const schema = new Schema({
   belance: {
     type: Number,
-    required: true,
+    default:0
   },
   number: {
     type: Number,
-    unique: true,
-    required: true,
+    required:true,
+    unique:true
+  },
+  currencyType:{
+    type:String,
+    required:true
+  },
+  status:{
+    type:String,
+    required:true
   },
   since: {
     type: String,
-    required: true,
-  },
-  exp: {
-    type: String,
-    required: true,
-  },
-  validity: String,
-  status: {
-    type: String,
-    required: true,
+    default:`${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
   },
   user: {
     type: Schema.Types.ObjectId,

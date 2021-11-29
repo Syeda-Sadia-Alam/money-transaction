@@ -1,6 +1,7 @@
 import { Box, Grid } from '@mui/material';
 import Container from '../Common/Container';
 import About from './About';
+import FooterBottom from './FooterBottom';
 import RelatedLinks from './RelatedLinks';
 import SocialLinks from './SocialLinks';
 
@@ -20,6 +21,7 @@ const Footer = () => (
                     </Grid>
                 </Grid>
             </Box>
+            <FooterBottom />
         </Container>
     </Box>
 );

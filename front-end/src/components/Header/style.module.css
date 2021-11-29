@@ -9,6 +9,7 @@
   cursor: pointer;
   color: var(--white);
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .nav .navItem > a:hover {

@@ -36,7 +36,7 @@ exports.isAuthenticatedAdmin = () => {
         .json({ message: "Permission denied for missing token!" });
     }
     try {
-      const { email } = jwt.verify(token, "financeDeskAdmin");
+      const { email } = jwt.verify(token, "financeDeskAdminToken");
       const admin = await Admin.findOne({ email });
 
       if (!admin) {

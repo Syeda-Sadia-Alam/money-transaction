@@ -3,14 +3,14 @@ import {
     Instagram as InstagramIcon,
     Twitter as TwitterIcon,
     // eslint-disable-next-line prettier/prettier
-  YouTube as YouTubeIcon
+    YouTube as YouTubeIcon
 } from '@mui/icons-material';
 import { Box, Divider, IconButton, Typography } from '@mui/material';
 
 const SocialLinks = () => (
     <Box>
         <Typography color="var(--white)" variant="h5">
-            Follow US US
+            Follow US
         </Typography>
         <Box py="0.5rem">
             <Divider />

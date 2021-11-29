@@ -1,4 +1,5 @@
 const { model, Schema } = require("mongoose");
+const date = new Date()
 
 const schema = new Schema({
   name: {
@@ -17,10 +18,20 @@ const schema = new Schema({
   },
   gender: String,
   address: String,
-  account: {
-    type: Schema.Types.ObjectId,
-    ref: "Account",
+  since: {
+    type: String,
+    default:`${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
   },
+  history: [
+    {
+      type: Schema.Types.String,
+      ref: "History",
+    },
+  ],
+  card:{
+    ref:'Card',
+    type:Schema.Types.ObjectId
+  }
 });
 
 const User = new model("User", schema);

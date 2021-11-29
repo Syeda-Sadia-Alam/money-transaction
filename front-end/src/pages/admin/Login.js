@@ -1,81 +1,92 @@
 import { Login as LoginIcon } from '@mui/icons-material';
 import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { useContext, useEffect, useRef } from 'react';
+import { useHistory } from 'react-router-dom';
 import common from '../../components/Common';
+import appContext from '../../context/contexts/appContext';
 
 const { Container } = common;
-const AdminLoginPage = () => (
-    <Container>
-        <Box py="4rem">
-            <Grid container spacing={2}>
-                <Grid item md={5}>
-                    <Box>
-                        <Box
-                            component="img"
-                            src="/img/Mobile-login.jpg"
-                            width="100%"
-                            height="auto"
-                        />
-                    </Box>
-                </Grid>
-                <Grid item md={7}>
-                    <Box height="100%" flexDirection="row" display="flex" alignItems="center">
-                        <Paper elevation={3} style={{ width: '100%' }}>
-                            <Box pt="1rem" px="1rem">
-                                <Typography variant="h4" color="var(--primary)">
-                                    Admin Login
-                                </Typography>
-                            </Box>
-                            <Box p="1rem">
-                                <TextField
-                                    id="outlined-basic"
-                                    label="Email"
-                                    variant="outlined"
-                                    fullWidth
-                                    margin="dense"
-                                />
 
-                                <TextField
-                                    id="outlined-basic"
-                                    label="Subject"
-                                    variant="outlined"
-                                    fullWidth
-                                    margin="dense"
-                                />
+const AdminLoginPage = () => {
+    const { adminLoginHandleSubmit } = useContext(appContext);
+    const history = useHistory();
+    const emailRef = useRef();
+    const passwordRef = useRef();
 
-                                <Box pt="1rem" maxWidth="300px" color="var(--secondary)">
-                                    <Box display="flex" pb="0.25rem">
-                                        <Typography variant="subtitle2" color="var(--primary)">
-                                            Dont't have an account?
-                                            <Link
-                                                to="/user/signup"
-                                                style={{
-                                                    color: 'var(--secondary)',
-                                                    fontWeight: 'bold',
-                                                    textDecoration: 'none',
-                                                }}
-                                            >
-                                                {' '}
-                                                SignUp
-                                            </Link>
-                                        </Typography>
-                                    </Box>
-                                    <Button
-                                        variant="outlined"
-                                        startIcon={<LoginIcon />}
-                                        color="inherit"
-                                        fullWidth
-                                    >
-                                        Login
-                                    </Button>
+    useEffect(() => {
+        if (localStorage.getItem('admin-auth-token')) {
+            history.push('/admin/profile');
+        }
+    }, []);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        await adminLoginHandleSubmit(emailRef.current.value, passwordRef.current.value, history);
+    };
+    return (
+        <Container>
+            <Box py="4rem">
+                <Grid container spacing={2}>
+                    <Grid item md={5}>
+                        <Box>
+                            <Box
+                                component="img"
+                                src="/img/Mobile-login.jpg"
+                                width="100%"
+                                height="auto"
+                            />
+                        </Box>
+                    </Grid>
+                    <Grid item md={7}>
+                        <Box height="100%" flexDirection="row" display="flex" alignItems="center">
+                            <Paper
+                                component="form"
+                                onSubmit={handleSubmit}
+                                elevation={3}
+                                style={{ width: '100%' }}
+                            >
+                                <Box pt="1rem" px="1rem">
+                                    <Typography variant="h4" color="var(--primary)">
+                                        Admin Login
+                                    </Typography>
                                 </Box>
-                            </Box>
-                        </Paper>
-                    </Box>
-                </Grid>
-            </Grid>
-        </Box>
-    </Container>
-);
+                                <Box p="1rem">
+                                    <TextField
+                                        id="outlined-basic"
+                                        label="Email"
+                                        variant="outlined"
+                                        fullWidth
+                                        margin="dense"
+                                        inputRef={emailRef}
+                                    />
 
+                                    <TextField
+                                        id="outlined-basic"
+                                        label="Password"
+                                        type="password"
+                                        variant="outlined"
+                                        fullWidth
+                                        margin="dense"
+                                        inputRef={passwordRef}
+                                    />
+
+                                    <Box pt="1rem" maxWidth="300px" color="var(--secondary)">
+                                        <Button
+                                            variant="outlined"
+                                            startIcon={<LoginIcon />}
+                                            color="inherit"
+                                            fullWidth
+                                            type="submit"
+                                        >
+                                            Login
+                                        </Button>
+                                    </Box>
+                                </Box>
+                            </Paper>
+                        </Box>
+                    </Grid>
+                </Grid>
+            </Box>
+        </Container>
+    );
+};
 export default AdminLoginPage;

@@ -7,7 +7,7 @@ const { Title } = common;
 function ContactPage() {
     return (
         <Box py="6rem">
-            <Title fTitle="Contact" lTitle="US" />
+            <Title fTitle="Contact" lTitle="US" subTitle="Send email us" />
             <Contact />
         </Box>
     );

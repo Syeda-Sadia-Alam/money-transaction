@@ -1,6 +1,8 @@
 const userAuth = require("./userAuth");
-const adminAuth = require('./adminAuth');
 const user = require('./user')
+const card = require('./card')
+const adminAuth = require('./adminAuth');
+
 const paths = [
   {
     path: "/api/user",
@@ -9,6 +11,10 @@ const paths = [
   {
     path:'/api/admin',
     controller:adminAuth
+  },
+  {
+    path: "/api/card",
+    controller: card,
   },
   {
     path: "/api/welcome",

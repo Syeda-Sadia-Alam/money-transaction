@@ -6,7 +6,6 @@ exports.getAllUsersGetController =async (req,res)=>{
     const users = await User.find().select('-password')
     res.status(200).json({users})
   }catch(e){
-    console.log(e);
     res.status(500).json({ message: "Internal server error" });
   }
 }
@@ -30,7 +29,6 @@ exports.userProfileUpdatePutController = async (req, res) => {
       message: "Your profile has been updated successfully!",
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -52,5 +50,16 @@ exports.getUserInfoGetController = async(req,res)=>{
     })
   }catch(e){
     res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+exports.deleteUserDeleteController = async(req,res)=>{
+  try{
+    const { id } = req.params
+    await User.findOneAndDelete({_id:id})
+    await Card.findOneAndDelete({user:id})
+    res.status(200).json({message:'Successfully deleted the user'})
+  }catch(e){
+    res.status(500).json({message:'Internal server error'})
   }
 }

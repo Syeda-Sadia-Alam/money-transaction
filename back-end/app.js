@@ -3,25 +3,26 @@ const mongoose = require("mongoose");
 const setRoutes = require("./routes");
 const setMiddlewares = require("./middlewares");
 
-// Initialize app
-const app = express();
 const DB_USERNAME = 'syeda-sadia'
 const DB_PASSWORD = '4WmkKlouXAmgy8dl'
-const DB_URL = `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@cluster0.m0nad.mongodb.net/money-transaction?retryWrites=true&w=majority`
+
+// Initialize app
+const app = express();
+const DB_URL = `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@cluster0.m0nad.mongodb.net/money-transaction?retryWrites=true&w=majority`;
 const PORT = 8080;
 
-app.get("/", (req, res) => {
-  res.status(200).json({
-    message: "Assalamu Alaikum",
-    status: "API is working fine........",
-  });
-});
 
 // Set Middlewares
 setMiddlewares(app);
 
 // Set Routes
 setRoutes(app);
+
+app.get("/", (req, res) => {
+  res.status(200).json({
+    message: "Welcome to Finance Desk API"
+  });
+});
 
 const startApp = async () => {
   try {
