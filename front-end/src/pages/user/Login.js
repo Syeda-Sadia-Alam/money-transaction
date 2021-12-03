@@ -1,26 +1,25 @@
 import { Login as LoginIcon } from '@mui/icons-material';
 import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
 import { useContext, useEffect, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import common from '../../components/Common';
 import appContext from '../../context/contexts/appContext';
 
 const { Container } = common;
 
-const AdminLoginPage = () => {
-    const { adminLoginHandleSubmit } = useContext(appContext);
+const Login = () => {
     const history = useHistory();
-    const emailRef = useRef();
-    const passwordRef = useRef();
-
+    const { userLoginHandleSubmit } = useContext(appContext);
+    const emailRef = useRef(null);
+    const passwordRef = useRef(null);
     useEffect(() => {
-        if (localStorage.getItem('admin-auth-token')) {
-            history.push('/admin/profile');
+        if (localStorage.getItem('user-auth-token')) {
+            history.push('/user/profile');
         }
     }, []);
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        await adminLoginHandleSubmit(emailRef.current.value, passwordRef.current.value, history);
+        userLoginHandleSubmit(emailRef.current.value, passwordRef.current.value, history);
     };
     return (
         <Container>
@@ -46,12 +45,12 @@ const AdminLoginPage = () => {
                             >
                                 <Box pt="1rem" px="1rem">
                                     <Typography variant="h4" color="var(--primary)">
-                                        Admin Login
+                                        Login
                                     </Typography>
                                 </Box>
                                 <Box p="1rem">
                                     <TextField
-                                        id="outlined-basic"
+                                        id="user-email"
                                         label="Email"
                                         variant="outlined"
                                         fullWidth
@@ -60,15 +59,32 @@ const AdminLoginPage = () => {
                                     />
 
                                     <TextField
-                                        id="outlined-basic"
-                                        label="Subject"
+                                        id="user-password"
+                                        label="Password"
                                         variant="outlined"
                                         fullWidth
                                         margin="dense"
+                                        type="password"
                                         inputRef={passwordRef}
                                     />
 
                                     <Box pt="1rem" maxWidth="300px" color="var(--secondary)">
+                                        <Box display="flex" pb="0.25rem">
+                                            <Typography variant="subtitle2" color="var(--primary)">
+                                                Dont't have an account?
+                                                <Link
+                                                    to="/user/signup"
+                                                    style={{
+                                                        color: 'var(--secondary)',
+                                                        fontWeight: 'bold',
+                                                        textDecoration: 'none',
+                                                    }}
+                                                >
+                                                    {' '}
+                                                    SignUp
+                                                </Link>
+                                            </Typography>
+                                        </Box>
                                         <Button
                                             variant="outlined"
                                             startIcon={<LoginIcon />}
@@ -88,4 +104,4 @@ const AdminLoginPage = () => {
         </Container>
     );
 };
-export default AdminLoginPage;
+export default Login;

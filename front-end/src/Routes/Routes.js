@@ -10,8 +10,10 @@ import contactPage from '../pages/Contact';
 import homePage from '../pages/Home';
 import servicesPage from '../pages/Services';
 import userLoginPage from '../pages/user/Login';
+import UserProfilePage from '../pages/user/profile/Profile';
 import userSignupPage from '../pages/user/SingUp';
 import AdminPrivateRoute from './AdminPrivateRoute';
+import UserPrivateRoute from './UserPrivateRoute';
 
 const routes = [
     {
@@ -59,7 +61,9 @@ function Routes() {
                     <Route path={path} exact component={component} key={path} />
                 ))}
 
-              
+                <UserPrivateRoute path="/user/profile">
+                    <UserProfilePage />
+                </UserPrivateRoute>
                 <AdminPrivateRoute path="/admin/profile">
                     <AdminProfile />
                 </AdminPrivateRoute>

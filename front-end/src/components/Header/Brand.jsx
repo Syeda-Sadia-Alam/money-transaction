@@ -4,7 +4,7 @@ function Brand() {
     return (
         <Box component="div" bgcolor="var(--primary)">
             <Typography variant="h4" color="var(--white)">
-                FinanceDesk
+                BankLaunch
             </Typography>
         </Box>
     );
