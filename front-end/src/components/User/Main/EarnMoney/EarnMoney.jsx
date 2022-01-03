@@ -27,7 +27,8 @@ export default function EarnMoney() {
 
     const history = useHistory();
     const [isResolved, setResolved] = useState(false);
-    const [state, setState] = useState(0);
+    const startFromRandom = Math.floor(Math.random() * (videosURLs.length - 1)) + 1;
+    const [state, setState] = useState(startFromRandom);
     const {
         state: {
             cardDetail: { _id, belance, number },

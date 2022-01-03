@@ -3,6 +3,7 @@ import {
     Dashboard as DashboardIcon,
     Logout as LogoutIcon,
     ManageAccounts as ManageAccountsIcon,
+    Message as MessageIcon,
     People as PeopleIcon,
     // eslint-disable-next-line prettier/prettier
     RequestPage as RequestPageIcon
@@ -29,6 +30,11 @@ const links = [
         name: 'Users Management',
         path: '/admin/profile?tab=users-management',
         icon: <PeopleIcon style={iconStyles} />,
+    },
+    {
+        name: 'Contact Messages',
+        path: '/admin/profile?tab=contact-messages',
+        icon: <MessageIcon style={iconStyles} />,
     },
 
     {

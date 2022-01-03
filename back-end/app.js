@@ -1,13 +1,14 @@
+require('dotenv').config()
 const express = require("express");
 const mongoose = require("mongoose");
 const setRoutes = require("./routes");
 const setMiddlewares = require("./middlewares");
-const DB_USERNAME = 'syeda-sadia'
-const DB_PASSWORD = '4WmkKlouXAmgy8dl'
+
 // Initialize app
 const app = express();
-const DB_URL = `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@cluster0.m0nad.mongodb.net/money-transaction?retryWrites=true&w=majority`;
-const PORT = 8080;
+const DB_URL =  `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.m0nad.mongodb.net/money-transaction?retryWrites=true&w=majority`;
+
+const PORT = process.env.PORT || 8080;
 
 
 // Set Middlewares

@@ -12,6 +12,7 @@ import servicesPage from '../pages/Services';
 import userLoginPage from '../pages/user/Login';
 import UserProfilePage from '../pages/user/profile/Profile';
 import userSignupPage from '../pages/user/SingUp';
+import verificationPage from '../pages/user/Verification';
 import AdminPrivateRoute from './AdminPrivateRoute';
 import UserPrivateRoute from './UserPrivateRoute';
 
@@ -40,7 +41,10 @@ const routes = [
         component: userSignupPage,
         path: '/user/signup',
     },
-
+    {
+        component: verificationPage,
+        path: '/user/signup/verification/:token',
+    },
     {
         component: adminLoginPage,
         path: '/admin/login',

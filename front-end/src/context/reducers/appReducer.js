@@ -21,6 +21,7 @@ const {
     FETCH_BANK_DETAIL_SUCCESS,
     SET_ADMIN_LOGGED_IN_STATUS,
     SET_USER_LOGGED_IN_STATUS,
+    FETCH_ALL_CONTACT_MSGS_SUCCESS,
 } = constant;
 
 const reducer = (state, actions) => {
@@ -181,6 +182,12 @@ const reducer = (state, actions) => {
             state = {
                 ...state,
                 isLoggedInUser: !!localStorage.getItem('user-auth-token'),
+            };
+            return state;
+        case FETCH_ALL_CONTACT_MSGS_SUCCESS:
+            state = {
+                ...state,
+                contacts: actions.payload,
             };
             return state;
         default:

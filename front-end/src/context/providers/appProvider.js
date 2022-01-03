@@ -20,6 +20,7 @@ const initState = {
     bankDetail: {},
     isLoggedInAdmin: false,
     isLoggedInUser: false,
+    contacts: [],
 };
 
 const AppProvider = ({ children }) => {

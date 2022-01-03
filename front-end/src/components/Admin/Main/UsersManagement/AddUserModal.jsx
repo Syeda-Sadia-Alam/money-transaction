@@ -10,11 +10,9 @@ import {
     TextField
 } from '@mui/material';
 import { useContext, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
 import appContext from '../../../../context/contexts/appContext';
 
 const AddUserModal = ({ open, handleToggle }) => {
-    const history = useHistory();
     const { userRegistrationHandleSubmit, fetchAllUsers } = useContext(appContext);
     const nameRef = useRef(null);
     const emailRef = useRef(null);
@@ -28,7 +26,6 @@ const AddUserModal = ({ open, handleToggle }) => {
             emailRef.current.value,
             passwordRef.current.value,
             confirmPasswordRef.current.value,
-            history,
             true
         );
         fetchAllUsers();

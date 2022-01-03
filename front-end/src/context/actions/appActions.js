@@ -20,6 +20,7 @@ const {
     FETCH_BANK_DETAIL_SUCCESS,
     SET_ADMIN_LOGGED_IN_STATUS,
     SET_USER_LOGGED_IN_STATUS,
+    FETCH_ALL_CONTACT_MSGS_SUCCESS,
 } = constant;
 // eslint-disable-next-line no-unused-vars
 
@@ -161,8 +162,8 @@ const main = (dispatch, state) => {
         email,
         password,
         confirmPassword,
-        history,
-        isAdmin
+        isAdmin,
+        setVerification
     ) => {
         try {
             let hasErrorMsg = null;
@@ -207,21 +208,60 @@ const main = (dispatch, state) => {
             });
             const data = await res.json();
             if (!isAdmin) {
-                if (res.status === 201) {
-                    history.push('/user/login');
+                if (res.status === 200) {
+                    setVerification(true);
+                    // history.push('/user/login');
                 }
             }
 
             dispatch({
                 type: APP_SET_ALERT_MESSAGE,
                 payload: {
-                    status: res.status === 201 ? 'success' : 'error',
+                    status: res.status === 200 ? 'success' : 'error',
                     message: data.message,
                 },
             });
             dispatch({
                 type: APP_LOADING_STOP,
             });
+        } catch (error) {
+            console.log({ error });
+            dispatch({
+                type: APP_LOADING_STOP,
+            });
+            dispatch({
+                type: APP_SET_ALERT_MESSAGE,
+                payload: {
+                    status: 'error',
+                    message: error.message,
+                },
+            });
+        }
+    };
+    // To complete the verification when completed the signup
+    methods.userSignupVerification = async (token, history) => {
+        dispatch({
+            type: APP_LOADING_START,
+        });
+
+        try {
+            const res = await fetch(`/api/user/auth/signup/verification/${token}`, {
+                method: 'GET',
+            });
+            const data = await res.json();
+
+            dispatch({
+                type: APP_SET_ALERT_MESSAGE,
+                payload: {
+                    status: res.status === 200 ? 'success' : 'error',
+                    message: data.message,
+                },
+            });
+            dispatch({
+                type: APP_LOADING_STOP,
+            });
+
+            history.push('/user/login');
         } catch (error) {
             dispatch({
                 type: APP_LOADING_STOP,
@@ -1212,7 +1252,112 @@ const main = (dispatch, state) => {
             });
         }
     };
+    methods.sendContactHandleSubmit = async ({ name, email, subject, message }) => {
+        try {
+            let hasErrorMsg = null;
+            if (!message) {
+                hasErrorMsg = 'Please provide your opinion in message box';
+            }
+            if (!subject) {
+                hasErrorMsg = 'Please provide a subject';
+            }
+            if (email) {
+                if (!email?.includes('@')) {
+                    hasErrorMsg = 'Please provide a valid email address';
+                }
+            }
+            if (!email) {
+                hasErrorMsg = 'Please provide a email';
+            }
 
+            if (!name) {
+                hasErrorMsg = 'Please provide a name';
+            }
+
+            if (hasErrorMsg) {
+                dispatch({
+                    type: APP_SET_ALERT_MESSAGE,
+                    payload: {
+                        status: 'info',
+                        message: hasErrorMsg,
+                    },
+                });
+                return;
+            }
+            dispatch({
+                type: APP_LOADING_START,
+            });
+            const res = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': process.env.apiKey,
+                },
+                body: JSON.stringify({ name, email, subject, message }),
+            });
+            const data = await res.json();
+            console.log({ data });
+            dispatch({
+                type: APP_SET_ALERT_MESSAGE,
+                payload: {
+                    status: res.status === 201 ? 'success' : 'error',
+                    message: data.message,
+                },
+            });
+
+            dispatch({
+                type: APP_LOADING_STOP,
+            });
+        } catch (error) {
+            dispatch({
+                type: APP_LOADING_STOP,
+            });
+            dispatch({
+                type: APP_SET_ALERT_MESSAGE,
+                payload: {
+                    status: 'error',
+                    message: error.message,
+                },
+            });
+        }
+    };
+    methods.fetchAllContactMessages = async (history) => {
+        dispatch({
+            type: APP_LOADING_START,
+        });
+
+        try {
+            const res = await fetch('/api/contact', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': process.env.apiKey,
+                    'x-admin-auth-token': getAdminToken(history),
+                },
+            });
+            const data = await res.json();
+            if (res.status === 200) {
+                dispatch({
+                    type: FETCH_ALL_CONTACT_MSGS_SUCCESS,
+                    payload: data.contacts,
+                });
+            }
+            dispatch({
+                type: APP_LOADING_STOP,
+            });
+        } catch (error) {
+            dispatch({
+                type: APP_LOADING_STOP,
+            });
+            dispatch({
+                type: APP_SET_ALERT_MESSAGE,
+                payload: {
+                    status: 'error',
+                    message: error.message,
+                },
+            });
+        }
+    };
     return methods;
 };
 
